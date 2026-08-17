@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Mi Cumpleaños - Invitación</title>
+
+<!-- Miniatura para WhatsApp -->
+<meta property="og:title" content="¡Te invito a mi Cumpleaños!">
+<meta property="og:description" content="Nos encantará compartir este gran día contigo. ¡Haz clic para ver la invitación!">
+<meta property="og:image" content="portada.jpg">
+<meta property="og:type" content="website">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="¡Te invito a mi Cumpleaños!">
+<meta name="twitter:description" content="Nos encantará compartir este gran día contigo.">
+<meta name="twitter:image" content="portada.jpg">
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap"
+      rel="stylesheet">
+
+
+<style>
+
+/* =========================
+   GENERAL
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #000000;
+}
+
+
+/* =========================
+   SOBRE
+========================= */
+
+.fullscreen-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.envelope-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    background-color: #111111;
+
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.03) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            0deg,
+            rgba(255,255,255,0.03) 1px,
+            transparent 1px
+        ),
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(255,255,255,0.05) 0%,
+            rgba(0,0,0,0.8) 100%
+        );
+
+    background-size:
+        4px 4px,
+        4px 4px,
+        100% 100%;
+
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    perspective: 1500px;
+
+    z-index: 1;
+}
+
+
+/* =========================
+   SOLAPAS
+========================= */
+
+.flap {
+    position: absolute;
+    left: 0;
+
+    width: 0;
+    height: 0;
+
+    border-style: solid;
+
+    transition:
+        transform 0.9s cubic-bezier(
+            0.25,
+            0.46,
+            0.45,
+            0.94
+        );
+
+    backface-visibility: hidden;
+}
+
+.envelope-flap-top {
+    top: 0;
+
+    border-width:
+        48vh
+        50vw
+        0
+        50vw;
+
+    border-color:
+        #1c1c1c
+        transparent
+        transparent
+        transparent;
+
+    transform-origin: top;
+
+    z-index: 4;
+}
+
+.envelope-flap-bottom {
+    bottom: 0;
+
+    border-width:
+        0
+        50vw
+        48vh
+        50vw;
+
+    border-color:
+        transparent
+        transparent
+        #0a0a0a
+        transparent;
+
+    transform-origin: bottom;
+
+    z-index: 2;
+}
+
+.envelope-flap-left {
+    top: 0;
+
+    border-width:
+        50vh
+        0
+        50vh
+        50vw;
+
+    border-color:
+        transparent
+        transparent
+        transparent
+        #141414;
+
+    z-index: 1;
+}
+
+.envelope-flap-right {
+    top: 0;
+    right: 0;
+    left: auto;
+
+    border-width:
+        50vh
+        50vw
+        50vh
+        0;
+
+    border-color:
+        transparent
+        #141414
+        transparent
+        transparent;
+
+    z-index: 1;
+}
+
+
+/* =========================
+   SELLO
+========================= */
+
+.center-group {
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 5;
+
+    transition:
+        opacity 0.3s ease;
+}
+
+.seal {
+    width: 110px;
+    height: 110px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,0.6);
+
+    margin-bottom: 20px;
+
+    border:
+        2px solid rgba(255,255,255,0.4);
+}
+
+.view-text {
+    font-size: 14px;
+
+    color: #cccccc;
+
+    font-weight: 400;
+
+    text-transform: uppercase;
+
+    letter-spacing: 2.5px;
+
+    opacity: 0.9;
+
+    pointer-events: none;
+
+    background-color:
+        rgba(20,20,20,0.85);
+
+    padding:
+        5px 12px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 2px 5px rgba(0,0,0,0.3);
+}
+
+
+/* =========================
+   CONTENIDO
+========================= */
+
+.invitation-content {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: flex-start;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition:
+        opacity 0.8s ease 0.4s;
+
+    z-index: 3;
+
+    background-color: #000000;
+
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+.card-wrapper {
+    width: 100%;
+
+    max-width: 420px;
+
+    margin: 0 auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 0;
+
+    padding: 0 0 100px 0;
+}
+
+.portada-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    flex-shrink: 0;
+}
+
+
+/* =========================
+   ESTILOS DE ANIMACIÓN
+========================= */
+
+.animar-elemento {
+    opacity: 0;
+    transform: translateY(80px) scale(0.90);
+    transition: opacity 1.8s cubic-bezier(0.16, 1, 0.3, 1), transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.animar-elemento.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+
+/* =========================
+   BOTÓN UBICACIÓN
+========================= */
+
+.contenedor-boton {
+    width: 100%;
+    background-color: #111111;
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
+    flex-shrink: 0;
+}
+
+.boton-ubicacion {
+    display: inline-block;
+    padding: 15px 40px;
+    background-color: #111111;
+    border: 2px solid #C0C0C0;
+    color: #C0C0C0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-radius: 30px;
+}
+
+.boton-ubicacion:hover {
+    background-color: #C0C0C0;
+    color: #111111;
+}
+
+
+/* =========================
+   FORMULARIO ASISTENCIA
+========================= */
+
+.contenedor-formulario {
+    width: 100%;
+    background-color: #111111;
+    padding: 20px 20px 40px 20px;
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.form-box {
+    width: 100%;
+    max-width: 340px;
+    margin: auto;
+    box-sizing: border-box;
+}
+
+.form-box label.titulo {
+    display: block;
+    margin-top: 25px;
+    font-family: 'Cinzel', serif;
+    font-weight: 400;
+    font-size: 11px;
+    margin-bottom: 8px;
+    color: #C0C0C0;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.form-box input[type="text"],
+.form-box select,
+.form-box textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #4A4A4A;
+    border-radius: 12px;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 12px;
+    background-color: #111111;
+    color: #FFFFFF;
+    margin-bottom: 5px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-box input[type="text"]::placeholder,
+.form-box textarea::placeholder {
+    color: #666666;
+}
+
+.form-box input[type="text"]:focus,
+.form-box select:focus,
+.form-box textarea:focus {
+    border-color: #C0C0C0;
+}
+
+.form-box .opciones-asistencia {
+    display: flex;
+    border: 1px solid #4A4A4A;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #111111;
+    gap: 1px;
+}
+
+.form-box .opcion-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 5px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #C0C0C0;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.form-box .opcion-item input {
+    display: none;
+}
+
+.form-box .opcion-item:has(input:checked) {
+    background-color: #C0C0C0;
+    color: #111111;
+}
+
+.form-box button {
+    background: #111111;
+    color: #C0C0C0;
+    padding: 16px;
+    border: 2px solid #C0C0C0;
+    border-radius: 25px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 30px;
+    font-size: 13px;
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    transition: all 0.3s ease;
+}
+
+.form-box button:hover {
+    background-color: #C0C0C0;
+    color: #111111;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.35);
+}
+
+.form-box button:active {
+    transform: translateY(1px);
+}
+
+.form-box button.cargando {
+    background: #4A4A4A !important;
+    color: #9E9E9E !important;
+    border-color: #4A4A4A !important;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.form-box #exito {
+    display: none;
+    text-align: center;
+    padding: 40px 10px;
+    font-family: 'Cinzel', serif;
+}
+
+.form-box #exito h3 {
+    color: #C0C0C0;
+    font-size: 16px;
+    letter-spacing: 2px;
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+
+/* =========================
+   APERTURA
+========================= */
+
+.open .envelope-flap-top {
+    transform: rotateX(-180deg);
+}
+
+.open .envelope-flap-bottom {
+    transform: rotateX(180deg);
+}
+
+.open .center-group {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.open .invitation-content {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+}
+
+
+/* =========================
+   MÚSICA
+========================= */
+
+.music-player {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 55px;
+    height: 55px;
+    background-color: #000000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    z-index: 200;
+    transition: transform 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.music-player:active {
+    transform: scale(0.95);
+}
+
+.music-player svg {
+    width: 24px;
+    height: 24px;
+    fill: #FFFFFF;
+}
+
+.music-player.playing {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255,255,255,0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(255,255,255,0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255,255,255,0);
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="fullscreen-wrapper">
+
+
+    <!-- =========================
+         SOBRE
+    ========================== -->
+
+    <div
+        class="envelope-container"
+        id="envelope"
+        onclick="openEnvelope()"
+    >
+
+        <div class="flap envelope-flap-top"></div>
+
+        <div class="flap envelope-flap-left"></div>
+
+        <div class="flap envelope-flap-right"></div>
+
+        <div class="flap envelope-flap-bottom"></div>
+
+
+        <div class="center-group">
+
+            <!-- SELLO EN PNG -->
+            <img
+                src="sello.png"
+                alt="Sello"
+                class="seal"
+            >
+
+            <div class="view-text">
+                Ver invitación
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             CONTENIDO DE LA INVITACIÓN
+        ========================= -->
+
+        <div
+            class="invitation-content"
+            id="scrollContainer"
+        >
+
+            <div class="card-wrapper">
+
+                <!-- 1. PORTADA -->
+                <img
+                    src="portada.jpg"
+                    alt="Portada"
+                    class="portada-img"
+                >
+
+                <!-- 2. FECHA -->
+                <img
+                    src="fecha.jpg"
+                    alt="Fecha"
+                    class="portada-img animar-elemento"
+                    style="margin-top: -5px;"
+                >
+
+                <!-- 3. LUGAR -->
+                <img
+                    src="lugar.jpg"
+                    alt="Lugar"
+                    class="portada-img animar-elemento"
+                    style="margin-top: -5px;"
+                >
+
+                <!-- 4. BOTÓN UBICACIÓN -->
+                <div class="contenedor-boton animar-elemento">
+                    <a href="https://www.google.com/maps/place/Villarreal/data=!4m2!3m1!1s0x0:0x39c87d6efbe6435d?sa=X&ved=1t:2428&ictx=111"
+                       class="boton-ubicacion"
+                       target="_blank">
+                        Ver ubicación
+                    </a>
+                </div>
+
+                <!-- 5. VESTIMENTA -->
+                <img
+                    src="vestimenta.jpg"
+                    alt="Vestimenta"
+                    class="portada-img animar-elemento"
+                    style="margin-top: -5px;"
+                >
+
+                <!-- 6. TITULO -->
+                <img
+                    src="titulo.jpg"
+                    alt="Título"
+                    class="portada-img animar-elemento"
+                    style="margin-top: -5px;"
+                >
+
+                <!-- 7. RECO (FOUR POINTS) -->
+                <img
+                    src="reco.jpg"
+                    alt="Recomendación"
+                    class="portada-img animar-elemento"
+                    style="margin-top: -5px;"
+                >
+
+                <!-- 8. BOTÓN FOUR POINTS -->
+                <div class="contenedor-boton animar-elemento">
+                    <a href="https://www.google.com/maps/place/Four+Points+by+Sheraton+Distrito+Uno+Chihuahua/@28.6616252,-106.130297,17z/data=!3m1!4b1!4m9!3m8!1s0x86ea5ce77874e6d7:0xc8762d20e620c957!5m2!4m1!1i2!8m2!3d28.6616252!4d-106.1277167!16s%2Fg%2F1tj_5pkc?entry=ttu&g_ep=EgoyMDI2MDgxMi4wIKXMDSoASAFQAw%3D%3D"
+                       class="boton-ubicacion"
+                       target="_blank">
+                        Ver ubicación
+                    </a>
+                </div>
+
+                <!-- 9. FOTO RECOM -->
+                <img
+                    src="recom.jpg"
+                    alt="Recomendación Hotel"
+                    class="portada-img animar-elemento"
+                    style="margin-top: -5px;"
+                >
+
+                <!-- 10. BOTÓN COURTYARD BY MARRIOTT -->
+                <div class="contenedor-boton animar-elemento">
+                    <a href="https://www.google.com/maps/place/Courtyard+by+Marriott+Chihuahua/@28.6626265,-106.1301083,17z/data=!3m1!4b1!4m9!3m8!1s0x86ea42f176220b8b:0x682c8539218a7b9b!5m2!4m1!1i2!8m2!3d28.6626265!4d-106.127528!16s%2Fg%2F11by_crp28?entry=ttu&g_ep=EgoyMDI2MDgxMi4wIKXMDSoASAFQAw%3D%3D"
+                       class="boton-ubicacion"
+                       target="_blank">
+                        Ver ubicación
+                    </a>
+                </div>
+
+                <!-- 11. REGALOS -->
+                <img
+                    src="regalos.jpg"
+                    alt="Regalos"
+                    class="portada-img animar-elemento"
+                    style="margin-top: -5px;"
+                >
+
+                <!-- 12. ESPACIOS -->
+                <img
+                    src="espacios.jpg"
+                    alt="Espacios"
+                    class="portada-img animar-elemento"
+                    style="margin-top: -5px;"
+                >
+
+                <!-- 13. ASISTENCIA (FORMULARIO) -->
+                <div class="contenedor-formulario animar-elemento" style="margin-top: -5px;">
+                    <div class="form-box">
+                        <div id="formContent">
+                            <form id="rsvpForm">
+
+                                <label class="titulo">Nombre Completo</label>
+                                <input type="text" name="nombre" placeholder="Escribe tu nombre" required>
+
+                                <label class="titulo">¿Asistirás?</label>
+                                <div class="opciones-asistencia">
+                                    <label class="opcion-item">
+                                        <input type="radio" name="asistencia" value="1" checked>
+                                        SÍ, ASISTIRÉ
+                                    </label>
+
+                                    <label class="opcion-item">
+                                        <input type="radio" name="asistencia" value="0">
+                                        NO PODRÉ ASISTIR
+                                    </label>
+                                </div>
+
+                                <label class="titulo">Mensaje para el festejado</label>
+                                <textarea name="mensaje" rows="3" placeholder="Escribe tu mensaje (opcional)"></textarea>
+
+                                <button type="submit" id="btn">Enviar Respuesta</button>
+
+                            </form>
+                        </div>
+
+                        <div id="exito">
+                            <h3>
+                                ¡Muchas gracias!<br>
+                                Tu respuesta ha sido enviada.
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         MÚSICA
+    ========================= -->
+
+    <div
+        class="music-player"
+        id="musicButton"
+        onclick="toggleMusic(event)"
+    >
+
+        <svg
+            id="musicIcon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+        >
+
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+
+        </svg>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+    AUDIO
+========================= -->
+
+<audio
+    id="backgroundAudio"
+    loop
+>
+
+    <source
+        src="cancion.mp3"
+        type="audio/mpeg"
+    >
+
+</audio>
+
+
+<script>
+
+/* =========================
+   ANIMACIÓN EXCLUSIVA AL LLEGAR CON EL SCROLL
+========================= */
+
+const observerOptions = {
+    root: document.getElementById('scrollContainer'),
+    rootMargin: '0px 0px -10% 0px',
+    threshold: 0.35
+};
+
+const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+document.addEventListener("DOMContentLoaded", () => {
+    const elementosAnimados = document.querySelectorAll('.animar-elemento');
+    elementosAnimados.forEach(el => observer.observe(el));
+});
+
+
+/* =========================
+   APERTURA
+========================= */
+
+let isOpen = false;
+
+const audio =
+    document.getElementById('backgroundAudio');
+
+const musicButton =
+    document.getElementById('musicButton');
+
+const envelope =
+    document.getElementById('envelope');
+
+audio.preload = "auto";
+
+
+function openEnvelope() {
+
+    if (!isOpen) {
+
+        isOpen = true;
+
+        envelope.classList.add('open');
+
+
+        const playPromise =
+            audio.play();
+
+
+        if (playPromise !== undefined) {
+
+            playPromise.then(() => {
+
+                musicButton.classList.add('playing');
+
+            }).catch(error => {
+
+                console.log(
+                    "Audio necesita interacción:",
+                    error
+                );
+
+            });
+
+        }
+
+    }
+
+}
+
+
+/* =========================
+   MÚSICA
+========================= */
+
+function toggleMusic(event) {
+
+    event.stopPropagation();
+
+
+    if (audio.paused) {
+
+        audio.play();
+
+        musicButton.classList.remove('playing');
+        musicButton.classList.add('playing');
+
+    } else {
+
+        audio.pause();
+
+        musicButton.classList.remove('playing');
+
+    }
+
+}
+
+
+/* =========================
+   ENVÍO DE ASISTENCIA (GOOGLE SHEETS)
+========================= */
+
+const scriptURL = 'https://script.google.com/macros/s/AKfycbx8KQWPDeYr114wNvYE7D0yil_tYyfqORbE0DtH88lMg6rFhF5VAkguGcy5MAnFg_5HnQ/exec';
+const form = document.getElementById('rsvpForm');
+const btn = document.getElementById('btn');
+
+form.addEventListener('submit', e => {
+    e.preventDefault();
+
+    btn.disabled = true;
+    btn.innerText = 'Enviando...';
+    btn.classList.add('cargando');
+
+    fetch(scriptURL, {
+        method: 'POST',
+        body: new FormData(form),
+        mode: 'no-cors'
+    })
+    .then(() => {
+        document.getElementById('formContent').style.display = 'none';
+        document.getElementById('exito').style.display = 'block';
+    })
+    .catch(() => {
+        alert('Hubo un error al enviar.');
+        btn.disabled = false;
+        btn.innerText = 'Enviar Respuesta';
+        btn.classList.remove('cargando');
+    });
+});
+
+</script>
+
+
+</body>
+</html>
